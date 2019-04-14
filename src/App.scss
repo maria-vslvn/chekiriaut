@@ -63,30 +63,20 @@ button[class*="MuiButton"]{
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 .4rem 0 #aaa;
-  height: 100%;
-  p{margin:0}
+  height: calc(100% - 1rem);
+  margin:5px;
+  text-decoration: none;
+  p{margin:0;}
   &__head, &__body{
     padding: 1rem 2rem;
-  }
-  &__footer{
-    border-top:.1rem solid #ddd;
-    >p{
-      width: 50%;
-      padding:1rem;
-      display: flex;
-      justify-content: center;
-      font:{
-        size: 1.4rem;
-      }
-    }
-    &>p:first-child{
-      border-right:.1rem solid #ddd;
-    }
   }
   &__title{
     font:{
       size:1.8rem
     }
+    color: #111;
+    max-height: 5.9rem;
+    overflow: hidden;
     &:first-letter{
       text:{
         transform: uppercase;
@@ -106,9 +96,28 @@ button[class*="MuiButton"]{
     flex-grow: 1;
     display: flex;
     align-items: flex-end;
+    max-height: 10rem;
+    overflow: hidden;
   }
   &__footer{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    padding: 0 2rem 1rem 2rem;
+    button{
+      border-radius: 50%;
+      width: 3rem;
+      height:3rem;
+      padding:0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: auto;
+      margin-left:1.5rem;
+    }
   }
+}
+
+[class*="MuiFormControl"]{
+  width: 100%;
+
 }

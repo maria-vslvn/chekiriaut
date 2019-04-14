@@ -3,15 +3,18 @@ import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import {Route, Link, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
-import {Default} from "./Default";
-import {getPosts} from "../actions/PostActions";
-import Post from "./Post";
+import {getPosts, rmPost} from "../actions/PostActions";
 import Grid from "@material-ui/core/Grid";
+import PostsPage from "./PostsPage";
+import PostCreateForm from "./PostCreate";
 
 
 class InnerApp extends React.Component{
+  componentDidMount(){
+    this.props.getPostsAction();
+  }
   render(){
-    const { match, post, getPostsAction } = this.props;
+    const { match, post, getPostsAction, deletePostAction } = this.props;
     const linkStyle = {
       color: '#444',
       fontSize: '1.6rem',
@@ -24,18 +27,19 @@ class InnerApp extends React.Component{
         <Paper style={{width: 350, position:'fixed', top:48, bottom:0, left:0, borderRadius:0}}>
           <MenuList>
             <li>
-              <Link onClick={getPostsAction} style={linkStyle} to={`${match.url}/posts`}>Posts</Link>
+              <Link  style={linkStyle} to={`${match.url}/posts`}>Posts</Link>
             </li>
            <li>
-             <Link style={linkStyle} to={`${match.url}/users`}>Test</Link>
+             <Link style={linkStyle} to={`${match.url}/newPost`}>AddPost</Link>
            </li>
           </MenuList>
         </Paper>
        <div style={{width: 'calc(100% - 350px)', marginLeft: 350, padding: 10, boxSizing: 'border-box'}}>
          <Grid container spacing={8}>
            <Switch>
-             <Route path={`${match.path}/posts`} render={()=> Object.values(post).map((item, key) => <Post key={key} body={item.body} title={item.title} id={item.id} userId={item.userId} getPosts={getPostsAction} />)} />
-             <Route path={`${match.path}/users`} component={Default} />
+             <Route path={`${match.path}/posts`} render={()=> <PostsPage post={post} match={match} getPostAction={getPostsAction} deletePostAction={deletePostAction}/>} />
+             <Route path={`${match.path}/newPost`} component={PostCreateForm} />
+             {/*<Route path={`${match.path}/posts/:id`} render={()=><PostsPage/>} />*/}
            </Switch>
          </Grid>
        </div>
@@ -45,11 +49,13 @@ class InnerApp extends React.Component{
 }
 
 const mapStateToProps = store =>({
-  post: store.post.loaded,
+  post: store.post,
 });
 
 const mapDispatchToProps = dispatch => ({
   getPostsAction: () => dispatch(getPosts()),
+  deletePostAction: (item) => dispatch(rmPost(item)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InnerApp);
