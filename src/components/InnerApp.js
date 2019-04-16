@@ -3,7 +3,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import {Route, Link, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
-import {getPosts, rmPost} from "../actions/PostActions";
+import {getPosts, handleEditMode, rmPost, savePost, textEdit} from "../actions/PostActions";
 import Grid from "@material-ui/core/Grid";
 import PostsPage from "./PostsPage";
 import PostCreateForm from "./PostCreate";
@@ -14,7 +14,7 @@ class InnerApp extends React.Component{
     this.props.getPostsAction();
   }
   render(){
-    const { match, post, getPostsAction, deletePostAction } = this.props;
+    const { match, post, getPostsAction, deletePostAction, handleEditModeAction, textEditAction, saveTextAction } = this.props;
     const linkStyle = {
       color: '#444',
       fontSize: '1.6rem',
@@ -37,8 +37,18 @@ class InnerApp extends React.Component{
        <div style={{width: 'calc(100% - 350px)', marginLeft: 350, padding: 10, boxSizing: 'border-box'}}>
          <Grid container spacing={8}>
            <Switch>
-             <Route path={`${match.path}/posts`} render={()=> <PostsPage post={post} match={match} getPostAction={getPostsAction} deletePostAction={deletePostAction}/>} />
-             <Route path={`${match.path}/newPost`} component={PostCreateForm} />
+             <Route path={`${match.path}/posts`} render={()=>
+               <PostsPage
+                 post={post}
+                 match={match}
+                 saveTextAction={saveTextAction}
+                 textEditAction={textEditAction}
+                 getPostAction={getPostsAction}
+                 handleEditModeAction={handleEditModeAction}
+                 deletePostAction={deletePostAction}
+               />}
+             />
+             <Route path={`${match.path}/newPost`} render={()=><PostCreateForm post={post}/>} />
              {/*<Route path={`${match.path}/posts/:id`} render={()=><PostsPage/>} />*/}
            </Switch>
          </Grid>
@@ -55,6 +65,9 @@ const mapStateToProps = store =>({
 const mapDispatchToProps = dispatch => ({
   getPostsAction: () => dispatch(getPosts()),
   deletePostAction: (item) => dispatch(rmPost(item)),
+  handleEditModeAction: itemId => dispatch(handleEditMode(itemId)),
+  textEditAction: (itemId, itemValue) => dispatch(textEdit(itemId, itemValue)),
+  saveTextAction: (itemId) => dispatch(savePost(itemId))
 
 });
 

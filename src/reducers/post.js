@@ -1,31 +1,77 @@
-import {GET_POSTS, POSTS_SUCCESS, DELETE_POST, CREATE_POST} from '../actions/PostActions'
+import {
+  GET_POSTS,
+  POSTS_SUCCESS,
+  DELETE_POST,
+  CREATE_POST,
+  EDIT_MODE_POST,
+  HANDLE_TEXT_CHANGE, SAVE_POST
+} from '../actions/PostActions'
 
-const initialState = {};
+const initialState = {
+  posts: [],
+};
+
+const editModePosts = (posts, id) => posts.map(postItem => ({
+  ...postItem,
+  editMode: postItem.id === id,
+  //body: postItem.id === id ? 'pesun' : postItem.body,
+  editableField: postItem.body
+}));
+
+const savePosts = (posts, id) => posts.map(postItem => ({
+  ...postItem,
+  //editMode:
+  body: postItem.editableField,
+  editMode: false
+}));
+
+const handleTextChange = (posts, id, editableField) =>
+  posts.map(postItem => (console.log('ids: ', postItem.id, id) || {
+    ...postItem,
+    editableField: postItem.id === id ? editableField : postItem.editableField
+  }));
 
 export function postReducer(state = initialState, action) {
   switch (action.type) {
     case GET_POSTS:
-      return {...state};
+      return {
+        ...state
+      };
 
     case POSTS_SUCCESS:
-      return {...state, ...action.json};
+      return {
+        ...state,
+        posts: action.json,
+      };
 
     case DELETE_POST:
-      let temp = {...state};
-      let newState = Object.values(temp);
-      newState.splice(action.item, 1);
-      state = newState;
-      return {...newState};
+      return {
+        ...state,
+        posts: state.posts.filter(item => item.id !== action.item)
+      };
 
+    case EDIT_MODE_POST:
+      return {
+        ...state,
+        posts: editModePosts(state.posts, action.itemId)
+      };
+    case SAVE_POST:
+      return {
+        ...state,
+        posts: savePosts(state.posts, action.itemId)
+      };
 
+    case HANDLE_TEXT_CHANGE:
+      return {
+        ...state,
+        posts: handleTextChange(state.posts, action.itemId, action.itemValue)
+      };
     case CREATE_POST:
-      let temp1 = {...state};
-      let newState1 = Object.values(temp1);
-      let item = {title: action.text, body: action.body};
-      console.log(action.text);
-      newState1.push(item);
-      state = newState;
-      return {...newState1};
+      let item = {title: action.text, body: action.body, userId: action.userId, id: action.id};
+      state.posts.push(item);
+      return {
+        ...state,
+      };
 
     default:
       return state;

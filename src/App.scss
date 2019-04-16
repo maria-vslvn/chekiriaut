@@ -95,18 +95,20 @@ button[class*="MuiButton"]{
     color: #555;
     flex-grow: 1;
     display: flex;
-    align-items: flex-end;
-    max-height: 10rem;
-    overflow: hidden;
+   p{
+     max-height: 10rem;
+     overflow: hidden;
+     font-size: 1.4rem;
+   }
   }
   &__footer{
     display: flex;
     justify-content: flex-end;
     padding: 0 2rem 1rem 2rem;
     button{
-      border-radius: 50%;
-      width: 3rem;
-      height:3rem;
+      //border-radius: 50%;
+      width: 4rem;
+      height:4rem;
       padding:0;
       display: flex;
       align-items: center;
@@ -119,5 +121,13 @@ button[class*="MuiButton"]{
 
 [class*="MuiFormControl"]{
   width: 100%;
-
+  label, textarea, input {
+    font-size: 1.4rem;
+  }
+  textarea{
+    line-height: 1.5;
+  }
+  [class*="focused"]{
+    legend{min-width: 5rem!important;}
+  }
 }

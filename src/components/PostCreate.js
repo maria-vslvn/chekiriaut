@@ -8,12 +8,15 @@ import Paper from "@material-ui/core/Paper";
 
 class PostCreateForm extends React.Component {
   render() {
-    const {title, body, createPost, setTitleAction} = this.props;
+    const {post, createPost, setTitleAction} = this.props;
     const setTitle = event => {
       this.setState({title: event.target.value})
     };
     const setBody = event => {
       this.setState({body: event.target.value})
+    };
+    const setId = event => {
+      this.setState({id: event.target.value})
     };
     return (
       <Grid container>
@@ -26,7 +29,7 @@ class PostCreateForm extends React.Component {
               <TextField
                 id={"postTitle"}
                 label="Post Title"
-                value={title}
+                value={post.title}
                 onChange={(value) => setTitle(value)}
                 margin="normal"
                 variant="outlined"
@@ -39,15 +42,26 @@ class PostCreateForm extends React.Component {
                 multiline
                 rows="8"
                 onChange={(value) => setBody(value)}
-                value={body}
+                value={post.body}
                 margin="normal"
                 variant="outlined"
               />
             </Grid>
+            <Grid item xs={6}>
+              <p>{}</p>
+              {/*<TextField*/}
+                {/*id={"postTitle"}*/}
+                {/*label="Post Title"*/}
+                {/*value={title}*/}
+                {/*onChange={(value) => setId(value)}*/}
+                {/*margin="normal"*/}
+                {/*variant="outlined"*/}
+              {/*/>*/}
+            </Grid>
+            <Button style={{marginTop:'2rem', width:'100%'}} variant="contained" color="primary" onClick={()=>setTitleAction(this.state.title, this.state.body)}>Add New Post</Button>
           </Paper>
         </Grid>
         <Grid item xs={12} md={7}>
-        <Button style={{marginTop:'4rem'}} variant="contained" color="primary" onClick={()=>setTitleAction(this.state.title, this.state.body)}>Add New Post</Button>
         </Grid>
       </Grid>
     )
@@ -55,7 +69,7 @@ class PostCreateForm extends React.Component {
 }
 
 const mapStateToProps = store => ({
-  createPost: store.post
+  createPost: store.post.posts
 });
 const mapDispatchToProps = dispatch => ({
   setTitleAction: (text, body) => dispatch(createPostTitle(text, body)),
