@@ -25,9 +25,9 @@ class PostsPage extends React.Component{
             getPosts={getPostsAction}
           />
         )}
-        <Switch>
-          <Route exact path={`${match.path}/posts/:postId`} render={()=><p>ok</p>}/>
-        </Switch>
+        {/*<Switch>*/}
+          {/*<Route exact path={`${match.path}/posts/:postId`} render={()=><p>ok</p>}/>*/}
+        {/*</Switch>*/}
       </div>
     )
   }
